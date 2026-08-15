@@ -30,15 +30,20 @@ pipeline {
             }
         }
         
-        stage("Sonarqube Analysis "){
-            steps{
-                withSonarQubeEnv('sonar-scanner') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
-                    -Dsonar.java.binaries=. \
-                    -Dsonar.projectKey=Petclinic '''
-    
-                }
-            }
-        }
+        stage("Sonarqube Analysis") {
+    steps {
+        withSonarQubeEnv(
+            installationName: 'sonar-scanner',
+            credentialsId: 'sonar'
+        ) {
+            sh '''
+                $SCANNER_HOME/bin/sonar-scanner \
+                -Dsonar.projectName=Petclinic \
+                -Dsonar.java.binaries=. \
+                -Dsonar.projectKey=Petclinic
+            '''
+         }
+      }
     }
+  }
 }
